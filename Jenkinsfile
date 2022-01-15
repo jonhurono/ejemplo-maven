@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     dir("C:/Users/jjcha/Documents/Diplomado/Repos/ejemplo-maven"){
-                        sh "curl -X GET 'http://localhost:8080/rest/mscovid/test?msg=testing'"
+                        sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
                     }
                 }
             }
