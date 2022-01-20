@@ -11,6 +11,17 @@ pipeline {
                 }
             }
         }
+	stage('SonarQube analysis') {
+            steps {
+                script {
+                // requires SonarQube Scanner 2.8+
+                scannerHome = tool 'sonar-scanner'
+                }
+                withSonarQubeEnv('Sonarqube-server') {
+                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ejemplo-maven -Dsonar.java.binaries=build"
+                }
+            }
+        }
         stage('Test') {
             steps {
                 script {
