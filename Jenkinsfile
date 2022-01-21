@@ -29,26 +29,26 @@ pipeline {
                 }
             }
         }
+        
         stage('SonarQube analysis') {
-            steps {
-                script {
-                // requires SonarQube Scanner 2.8+
-                scannerHome = tool 'sonar-scanner'
-                }
-                withSonarQubeEnv('Sonarqube-server') {
-                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ejemplo-maven -Dsonar.java.binaries=build"
+            steps{
+                script{
+                    def scannerHome = tool 'sonar-scanner';
+                    withSonarQubeEnv('sonar-server') {
+                    bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ejemplo-maven -Dsonar.sources=src -Dsonar.java.binaries=build"
+                    }
                 }
             }
         }
-        stage('uploadNexus'){
+        
+        stage('uploadNexus') {
             steps {
+                echo 'uploadNexus'
                 script {
-                    curl -X GET -u 'developer:developer' https://2613-207-248-201-48.ngrok.io/#admin/repository/test-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O
-ls -ltr
+                    nexusPublisher nexusInstanceId: 'nexus_rodrigo', nexusRepositoryId: 'test-repo', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'C:/Users/jjcha/Documents/Diplomado/Repos/ejemplo-maven/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
                 }
             }
         }
         
     }
 }
-
