@@ -40,6 +40,15 @@ pipeline {
                 }
             }
         }
+	stage('uploadNexus'){
+            steps {
+                script {
+                    dir("C:/Users/jjcha/Documents/Diplomado/Repos/ejemplo-maven"){
+                        curl -X GET -u 'developer:developer' http://2613-207-248-201-48.ngrok.io/repository/test-repo/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O
+                    }
+                }
+            }
+        }
         stage('Run') {
             steps {
                 script {
